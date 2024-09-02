@@ -10,13 +10,30 @@
             width: 100%;
             height: 100%;
         }
-        embed {
+        #pdfViewer {
             width: 100%;
             height: 100vh;
+            border: none;
+            display: none; /* Ocultamos inicialmente, solo se muestra en desktop */
         }
     </style>
 </head>
 <body>
-    <embed src="AlmacenesWagner/CATALOGO%20ALMACENES%20WAGNER.pdf" type="application/pdf">
+    <iframe id="pdfViewer" src="AlmacenesWagner/CATALOGO%20ALMACENES%20WAGNER.pdf" type="application/pdf"></iframe>
+
+    <script>
+        // Función para detectar si es un dispositivo móvil
+        function isMobile() {
+            return /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        }
+
+        // Si es un dispositivo móvil, forzar la descarga del PDF
+        if (isMobile()) {
+            window.location.href = "AlmacenesWagner/CATALOGO%20ALMACENES%20WAGNER.pdf";
+        } else {
+            // Si es un escritorio, mostrar el PDF en el iframe
+            document.getElementById('pdfViewer').style.display = 'block';
+        }
+    </script>
 </body>
 </html>
