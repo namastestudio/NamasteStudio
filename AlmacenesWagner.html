@@ -1,92 +1,38 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>PDF Book Viewer</title>
+    <title>PDF Viewer</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Incluir jQuery desde CDN -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Incluir Turn.js desde CDN -->
-    <script src="https://cdn.jsdelivr.net/gh/blasten/turn.js@4/turn.min.js"></script>
-    <!-- Incluir PDF.js desde un CDN -->
-    <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
     <style>
         body, html {
             margin: 0;
             padding: 0;
             width: 100%;
             height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #f4f4f4;
         }
-        #book {
-            width: 80%;
-            height: 80vh;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-            display: none; /* Inicialmente oculto */
-        }
-        .page {
-            background-color: white;
+        #pdfViewer {
             width: 100%;
-            height: 100%;
-            padding: 10px;
-            box-sizing: border-box;
+            height: 100vh;
+            border: none;
+            display: none; /* Ocultamos inicialmente, solo se muestra en desktop */
         }
     </style>
 </head>
 <body>
-
-    <div id="book">
-        <!-- Las páginas se cargarán dinámicamente aquí -->
-    </div>
+    <iframe id="pdfViewer" src="AlmacenesWagner/CATALOGO%20ALMACENES%20WAGNER.pdf" type="application/pdf"></iframe>
 
     <script>
+        // Función para detectar si es un dispositivo móvil
         function isMobile() {
             return /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         }
 
+        // Si es un dispositivo móvil, forzar la descarga del PDF
         if (isMobile()) {
-            // Forzar descarga del PDF en dispositivos móviles
             window.location.href = "AlmacenesWagner/CATALOGO%20ALMACENES%20WAGNER.pdf";
         } else {
-            // Mostrar libro en escritorio
-            document.getElementById('book').style.display = 'block';
-
-            // Inicializar Turn.js
-            $('#book').turn({
-                width: 800,
-                height: 600,
-                autoCenter: true
-            });
-
-            // Usar PDF.js para cargar y renderizar cada página del PDF
-            var url = 'AlmacenesWagner/CATALOGO%20ALMACENES%20WAGNER.pdf';
-            var pdfjsLib = window['pdfjs-dist/build/pdf'];
-            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://mozilla.github.io/pdf.js/build/pdf.worker.js';
-
-            var loadingTask = pdfjsLib.getDocument(url);
-            loadingTask.promise.then(function(pdf) {
-                for (var pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
-                    pdf.getPage(pageNumber).then(function(page) {
-                        var viewport = page.getViewport({ scale: 1.5 });
-                        var canvas = document.createElement('canvas');
-                        var context = canvas.getContext('2d');
-                        canvas.height = viewport.height;
-                        canvas.width = viewport.width;
-                        
-                        page.render({
-                            canvasContext: context,
-                            viewport: viewport
-                        }).promise.then(function() {
-                            var pageDiv = document.createElement('div');
-                            pageDiv.classList.add('page');
-                            pageDiv.appendChild(canvas);
-                            $('#book').turn('addPage', pageDiv);
-                        });
-                    });
-                }
-            });
+            // Si es un escritorio, mostrar el PDF en el iframe
+            document.getElementById('pdfViewer').style.display = 'block';
         }
     </script>
 </body>
