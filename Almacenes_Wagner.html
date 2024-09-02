@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PDF Viewer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+        #pdfViewer {
+            width: 100%;
+            height: 90vh; /* Ajustado para dejar espacio para el botón de impresión */
+            border: none;
+        }
+        #printButton {
+            width: 100%;
+            height: 10vh;
+            background-color: #007BFF;
+            color: white;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <iframe id="pdfViewer" src="AlmacenesWagner/CATALOGO ALMACENES WAGNER.pdf" type="application/pdf"></iframe>
+    <button id="printButton" onclick="printPDF()">Print PDF</button>
+
+    <script>
+        function printPDF() {
+            const pdfFrame = document.getElementById('pdfViewer');
+            pdfFrame.focus();
+            pdfFrame.contentWindow.print();
+        }
+    </script>
+</body>
+</html>
